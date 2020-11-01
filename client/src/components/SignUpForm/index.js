@@ -1,32 +1,36 @@
 import React, { Fragment, useContext, useRef } from 'react';
-import "./style.scss";
+// import "./style.scss";
 import API from '../../utils/API';
 import UserContext from '../../utils/UserContext';
-import { useHistory } from "react-router-dom";
 
-function LoginForm(props) {
+function SignUpForm(props) {
     const { email, setEmail, loggedIn, setLoggedIn } = useContext(UserContext);
-    const history = useHistory();
     const emailInput = useRef();
     const passwordInput = useRef();
     let extraProps = {}
     if (props.className) {
         extraProps.className = props.className;
     }
-    let emailId = props.className ? props.className + "-login-email" : "login-email";
-    let emailHelpId = props.className ? props.className + "-login-email-help" : "login-email-help";
-    let passwordId = props.className ? props.className + "-login-password" : "login-password";
+    let emailId = props.className ? props.className + "-signup-email" : "signup-email";
+    let emailHelpId = props.className ? props.className + "-signup-email-help" : "signup-email-help";
+    let passwordId = props.className ? props.className + "-signup-password" : "signup-password";
     const handleSubmit = event => {
         // if the user hits enter or hits the button, this function will fire
         event.preventDefault();
         // console.log("submit happened");
         // console.log({ email: emailInput.current.value, password: passwordInput.current.value});
-        API.login({ email: emailInput.current.value, password: passwordInput.current.value})
+        // API.testUserRouter()
+        // .then(data => {
+        //     console.log(data);
+        // })
+        // .catch(err => {
+        //     console.log(err);
+        // });
+        API.signup({ email: emailInput.current.value, password: passwordInput.current.value})
             .then(data => {
                 // console.log(data);
                 setEmail(data.data.email);
                 setLoggedIn(true);
-                history.push("/");
             })
             .catch(err => {
                 console.log(err);
@@ -46,7 +50,7 @@ function LoginForm(props) {
                             <label htmlFor={passwordId}>Password</label>
                             <input ref={passwordInput} type="password" className="form-control" id={passwordId} />
                         </div>
-                        <button type="submit" className="btn btn-primary">Login</button>
+                        <button type="submit" className="btn btn-primary">Sign Up</button>
                     </form>
                     );
                 }
@@ -59,4 +63,4 @@ function LoginForm(props) {
     )
 }
 
-export default LoginForm;
+export default SignUpForm;
